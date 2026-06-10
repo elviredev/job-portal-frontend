@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import { Home } from '@/pages'
+import { Home, JobDetails } from '@/pages'
 import { Navbar } from '@/components'
 
 
@@ -9,6 +9,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/jobDetails' element={<JobDetails />} />
       </Routes>
     </>
   )

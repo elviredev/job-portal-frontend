@@ -64,7 +64,7 @@ const JobCard = () => {
          {/* Bottom — divider + button */}
          <div className="border-t border-gray-100 pt-4">
             <NavLink
-               to='#'
+               to='/jobDetails'
                className="w-full bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-2.5 rounded-xl font-semibold text-sm transition duration-200 shadow-md shadow-purple-100 text-center inline-block"
             >
                View & Apply
