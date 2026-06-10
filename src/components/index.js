@@ -1,1 +1,7 @@
 export { default as Navbar } from "./Navbar"
+export { default as Hero } from "./Hero"
+export { default as TrustedCompany } from "./TrustedCompany"
+export { default as ListingJobs } from "./ListingJobs"
+export { default as FilteredListings } from "./FilteredListings"
+export { default as JobCard } from "./JobCard"
+export { default as Footer } from "./Footer"

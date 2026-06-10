@@ -1,8 +1,14 @@
-import React from 'react'
+import { Footer, Hero, ListingJobs, TrustedCompany } from "@/components"
 
-function Home() {
+
+const Home = () => {
   return (
-    <div>Home Page</div>
+    <>
+      <Hero />
+      <TrustedCompany />
+      <ListingJobs />
+      <Footer />
+    </>
   )
 }
 

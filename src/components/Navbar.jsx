@@ -1,8 +1,9 @@
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { Link, NavLink } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
+import ponyo from '../assets/images/ponyo.jpg'
 
-function Navbar() {
+const Navbar = () => {
 
    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
    const dropdownRef = useRef(null)
@@ -10,6 +11,7 @@ function Navbar() {
    const [menuMobileOpen, setMenuMobileOpen] = useState(false)
 
    // fermer la dropdown en cliquant endehors
+   // le navigateur n'écoute les clics globaux que lorsque la dropdown est ouverte, et pas en permanence
    useEffect(() => {
       // fermer dropdown si dropdown existe ET clic n'a pas eu lieu sur un elt dans la dropdown
       const handleClickOutside = (e) => {
@@ -70,7 +72,7 @@ function Navbar() {
                               Hi, Elvire
                            </p>
                            <img
-                              src={null}
+                              src={ponyo}
                               alt="Profile"
                               referrerPolicy="no-referrer"
                               className="h-8 w-8 rounded-lg object-cover border-2 border-gray-100"
@@ -168,13 +170,13 @@ function Navbar() {
                      </NavLink>
 
 
-                     <NavLink to="/dashboard" className={getNavLinkClassMobile}>
+                     <NavLink to="/dashboard" onClick={() => setMenuMobileOpen(false)} className={getNavLinkClassMobile}>
                         Dashboard
                      </NavLink>
 
                      <NavLink
                         to='#'
-
+                        onClick={() => setMenuMobileOpen(false)}
                         className="block text-gray-600 hover:bg-purple-50 hover:text-purple-600 px-4 py-2.5 rounded-xl text-sm font-medium transition duration-200"
                      >
                         Manage Profile
@@ -189,7 +191,7 @@ function Navbar() {
                   </>
 
                   <>
-                     <NavLink to="/recruiterLogin" className={getNavLinkClassMobile}>
+                     <NavLink to="/recruiterLogin" onClick={() => setMenuMobileOpen(false)} className={getNavLinkClassMobile}>
                         Recruiter Login
                      </NavLink>
                      <div className="px-1 pt-1">

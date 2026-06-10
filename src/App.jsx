@@ -1,10 +1,9 @@
-import React from 'react'
 import { Routes, Route } from "react-router-dom"
-import { Home } from './pages'
-import { Navbar } from './components'
+import { Home } from '@/pages'
+import { Navbar } from '@/components'
 
 
-function App() {
+const App = () => {
   return (
     <>
       <Navbar />
