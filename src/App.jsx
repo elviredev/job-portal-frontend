@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import { CreateJob, Dashboard, EditedProfile, EditJob, Home, JobDetails, ManagedJobs } from '@/pages'
+import { CreateJob, Dashboard, EditedProfile, EditJob, Home, JobDetails, ManagedJobs, SavedJobs } from '@/pages'
 import { Navbar } from '@/components'
 
 
@@ -15,6 +15,7 @@ const App = () => {
         <Route path='/managedJobs' element={<ManagedJobs />} />
         <Route path='/editJob' element={<EditJob />} />
         <Route path='/editedProfile' element={<EditedProfile />} />
+        <Route path='/savedJobs' element={<SavedJobs />} />
       </Routes>
     </>
   )

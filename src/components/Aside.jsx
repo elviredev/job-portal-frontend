@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { FaPlusCircle, FaUsers, FaUserEdit, FaTimes, FaListUl } from "react-icons/fa"
-import ponyo from "../assets/images/ponyo.jpg"
+import kfcLogo from '../assets/images/kfc.png'
 
 const Aside = ({ isOpen, toggleSidebar }) => {
 
@@ -63,7 +63,7 @@ const Aside = ({ isOpen, toggleSidebar }) => {
                   <div className="relative shrink-0">
                      <img
                         className="w-8 h-8 rounded-lg object-cover shadow-sm ring-1 ring-purple-200"
-                        src={ponyo}
+                        src={kfcLogo}
                         referrerPolicy="no-referrer"
                         alt='image'
                      />
@@ -72,8 +72,8 @@ const Aside = ({ isOpen, toggleSidebar }) => {
 
                   {/* User Info */}
                   <div className="flex-1 min-w-0 relative z-10">
-                     <p className="text-xs font-semibold text-gray-800 truncate leading-none mb-0.5">Elvire</p>
-                     <p className="text-[10px] text-gray-400 truncate leading-none">eliredev@gmail.com</p>
+                     <p className="text-xs font-semibold text-gray-800 truncate leading-none mb-0.5">Tom Smith</p>
+                     <p className="text-[10px] text-gray-400 truncate leading-none">tom@gmail.com</p>
                   </div>
 
                   {/* Actions — always visible but subtle */}

@@ -1,7 +1,7 @@
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { Link, NavLink } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import ponyo from '../assets/images/ponyo.jpg'
+import kfcLogo from '../assets/images/kfc.png'
 
 const Navbar = () => {
 
@@ -69,10 +69,10 @@ const Navbar = () => {
                            className="flex items-center gap-2.5 pl-3 pr-1 py-1 rounded-xl hover:bg-gray-50 border border-transparent hover:border-gray-200 transition duration-200 group"
                         >
                            <p className="text-sm font-semibold text-gray-700 group-hover:text-purple-600 transition hidden md:block">
-                              Hi, Elvire
+                              Hi, Tom
                            </p>
                            <img
-                              src={ponyo}
+                              src={kfcLogo}
                               alt="Profile"
                               referrerPolicy="no-referrer"
                               className="h-8 w-8 rounded-lg object-cover border-2 border-gray-100"
@@ -88,8 +88,8 @@ const Navbar = () => {
                            <div className="absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 py-2 overflow-hidden">
                               {/* User info */}
                               <div className="px-4 py-3 border-b border-gray-100">
-                                 <p className="text-xs font-bold text-gray-800 truncate">Elvire Dev</p>
-                                 <p className="text-xs text-gray-400 truncate">elviredev@gmail.com</p>
+                                 <p className="text-xs font-bold text-gray-800 truncate">Tom Smith</p>
+                                 <p className="text-xs text-gray-400 truncate">tom@gmail.com</p>
                               </div>
 
                               <div className="py-1">
@@ -152,14 +152,14 @@ const Navbar = () => {
 
                   <div className="flex items-center gap-3 px-4 py-3 mb-2 bg-purple-50 rounded-xl mx-1">
                      <img
-                        src={ponyo}
+                        src={kfcLogo}
                         alt="Profile"
                         referrerPolicy="no-referrer"
                         className="h-10 w-10 rounded-xl object-cover border-2 border-white shadow-sm"
                      />
                      <div className="min-w-0">
-                        <p className="text-sm font-bold text-gray-800 truncate">Elvire</p>
-                        <p className="text-xs text-gray-500 truncate">elviredev@gmail.com</p>
+                        <p className="text-sm font-bold text-gray-800 truncate">Tom Smith</p>
+                        <p className="text-xs text-gray-500 truncate">tom@gmail.com</p>
                      </div>
                   </div>
 
