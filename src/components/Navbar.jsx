@@ -152,7 +152,7 @@ const Navbar = () => {
 
                   <div className="flex items-center gap-3 px-4 py-3 mb-2 bg-purple-50 rounded-xl mx-1">
                      <img
-                        src={null}
+                        src={ponyo}
                         alt="Profile"
                         referrerPolicy="no-referrer"
                         className="h-10 w-10 rounded-xl object-cover border-2 border-white shadow-sm"

@@ -1,4 +1,4 @@
-import { Aside } from "@/components"
+import { Aside, ViewApplications } from "@/components"
 import { useState } from "react"
 
 
@@ -28,6 +28,7 @@ const Dashboard = () => {
                />
             )}
             <Aside isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+            <ViewApplications />
          </div>
       </div>
    )

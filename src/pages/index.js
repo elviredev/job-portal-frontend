@@ -1,3 +1,7 @@
 export { default as Home } from "./Home"
 export { default as JobDetails } from "./JobDetails"
 export { default as Dashboard } from "./Dashboard"
+export { default as CreateJob } from "./CreateJob"
+export { default as ManagedJobs } from "./ManagedJobs"
+export { default as EditJob } from "./EditJob"
+export { default as EditedProfile } from "./EditedProfile"

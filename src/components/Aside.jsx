@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { FaPlusCircle, FaUsers, FaUserEdit, FaTimes, FaListUl } from "react-icons/fa"
+import ponyo from "../assets/images/ponyo.jpg"
 
 const Aside = ({ isOpen, toggleSidebar }) => {
 
@@ -45,7 +46,7 @@ const Aside = ({ isOpen, toggleSidebar }) => {
                   </NavLink>
                </li>
                <li>
-                  <NavLink to='/editProfile' className={getNavLinkClass}>
+                  <NavLink to='/editedProfile' className={getNavLinkClass}>
                      <FaUserEdit className="w-6 h-6" />
                      <span className="ml-3">Edit Profile</span>
                   </NavLink>
@@ -62,7 +63,7 @@ const Aside = ({ isOpen, toggleSidebar }) => {
                   <div className="relative shrink-0">
                      <img
                         className="w-8 h-8 rounded-lg object-cover shadow-sm ring-1 ring-purple-200"
-                        src={null}
+                        src={ponyo}
                         referrerPolicy="no-referrer"
                         alt='image'
                      />
@@ -71,8 +72,8 @@ const Aside = ({ isOpen, toggleSidebar }) => {
 
                   {/* User Info */}
                   <div className="flex-1 min-w-0 relative z-10">
-                     <p className="text-xs font-semibold text-gray-800 truncate leading-none mb-0.5">Virak</p>
-                     <p className="text-[10px] text-gray-400 truncate leading-none">virak@gmail.com</p>
+                     <p className="text-xs font-semibold text-gray-800 truncate leading-none mb-0.5">Elvire</p>
+                     <p className="text-[10px] text-gray-400 truncate leading-none">eliredev@gmail.com</p>
                   </div>
 
                   {/* Actions — always visible but subtle */}
@@ -100,10 +101,6 @@ const Aside = ({ isOpen, toggleSidebar }) => {
                </div>
             </div>
          </nav>
-
-
-
-
 
       </aside>
    )
