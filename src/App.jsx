@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import { CreateJob, Dashboard, EditedProfile, EditJob, Home, JobDetails, ManagedJobs, RecruiterLogin, RecruiterSignup, SavedJobs } from '@/pages'
+import { CreateJob, Dashboard, EditedProfile, EditJob, Home, JobDetails, ManagedJobs, RecruiterLogin, RecruiterSignup, SavedJobs, UserLogin, UserSignup } from '@/pages'
 import { Navbar } from '@/components'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
@@ -21,6 +21,8 @@ const App = () => {
           <Route path='/savedJobs' element={<SavedJobs />} />
           <Route path='/recruiterLogin' element={<RecruiterLogin />} />
           <Route path='/recruiterSignup' element={<RecruiterSignup />} />
+          <Route path='/userLogin' element={<UserLogin />} />
+          <Route path='/UserSignup' element={<UserSignup />} />
         </Routes>
       </GoogleOAuthProvider>
     </>

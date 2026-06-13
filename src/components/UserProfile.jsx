@@ -1,5 +1,5 @@
 import { TextInput } from "@/components"
-import kfcLogo from '../assets/images/kfc.png'
+import ponyo from '../assets/images/ponyo.jpg'
 
 
 const UserProfile = () => {
@@ -38,7 +38,7 @@ const UserProfile = () => {
                      {/* Avatar */}
                      <div className="shrink-0">
                         <img
-                           src={kfcLogo}
+                           src={ponyo}
                            alt="Profile"
                            referrerPolicy="no-referrer"
                            className="w-16 h-16 rounded-full    object-cover bg-purple-100"

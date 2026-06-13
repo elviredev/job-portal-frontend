@@ -1,6 +1,6 @@
 import { Aside, TextInput } from "@/components"
 import { useState } from "react"
-import ponyo from '../assets/images/ponyo.jpg'
+import kfcLogo from '../assets/images/kfc.png'
 
 const EditedProfile = () => {
 
@@ -71,7 +71,7 @@ const EditedProfile = () => {
                            <div className="flex items-center space-x-4 mt-2">
 
                               <img
-                                 src={ponyo}
+                                 src={kfcLogo}
                                  alt="Profile"
                                  referrerPolicy="no-referrer"
                                  className="w-16 h-16 rounded-full ring-2 ring-purple-400 bg-purple-100 flex items-center justify-center text-purple-600 text-xl font-bold" />
