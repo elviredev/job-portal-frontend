@@ -1,7 +1,53 @@
 import { FilteredListings, JobCard } from "@/components"
+import { useEffect, useState } from "react"
+import api from "@/api/axios"
 
 
 const ListingJobs = () => {
+
+
+   const [jobs, setJobs] = useState([])
+   const [loading, setLoading] = useState(true)
+   const [error, setError] = useState(null)
+
+   // fetch data from json-server
+   useEffect(() => {
+
+      const fetchJobs = async () => {
+         setLoading(true)
+         setError(null)
+
+         try {
+            const res = await api.get('/jobs')
+            // console.log(data);
+            setJobs(res.data || [])
+         } catch (err) {
+            console.log("Error:", err);
+            setError("Unable to load jobs")
+         } finally {
+            setLoading(false)
+         }
+      }
+
+      fetchJobs()
+   }, [])
+
+   if (loading) {
+      return (
+         <div className="flex justify-center py-20">
+            <p className="text-gray-500">Loading jobs...</p>
+         </div>
+      )
+   }
+
+   if (error) {
+      return (
+         <div className="flex justify-center py-20">
+            <p className="text-red-500">{error}</p>
+         </div>
+      )
+   }
+
    return (
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
          <div className="w-[95%] mx-auto">
@@ -35,7 +81,9 @@ const ListingJobs = () => {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                      {/* Job Cards */}
-                     <JobCard />
+                     {jobs.map((job) =>
+                        <JobCard key={job.id} job={job} />
+                     )}
                   </div>
                </main>
 
