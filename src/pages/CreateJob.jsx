@@ -2,6 +2,7 @@ import { Aside, TextInput, SelectInput, TextAreaInput } from "@/components"
 import { useState } from "react"
 import { FaCloudUploadAlt } from "react-icons/fa"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import api from '../api/axios'
 
 const CreateJob = () => {
@@ -75,10 +76,20 @@ const CreateJob = () => {
 
          // reset formulaire
          setFormData(initialFormData)
-         // rediriger
+
+         // notification
+         toast.success('Offre créée avec succès')
+
+         // redirection
          navigate('/')
       } catch (error) {
          console.log('Error:', error.response?.data);
+         if (error.response?.status === 422) {
+            // notification
+            toast.error('Veuillez corriger les erreurs du formulaire')
+         } else {
+            toast.error('Erreur serveur')
+         }
       } finally {
          setLoading(false)
       }
@@ -95,7 +106,7 @@ const CreateJob = () => {
                </svg>
             </button>
             <div className="ml-4 text-xl font-semibold text-purple-800">Talent Hub</div>
-            
+
          </header>
 
          <div className="flex flex-1 overflow-hidden">
@@ -286,7 +297,7 @@ const CreateJob = () => {
                            value={formData.company_description}
                            onChange={handleChange}
                            placeholder="Briefly describe your company, its mission, and culture."
-                           rows={4}                  
+                           rows={4}
                         />
                      </div>
 
