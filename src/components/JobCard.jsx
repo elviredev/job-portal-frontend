@@ -1,17 +1,10 @@
 import { NavLink } from "react-router-dom"
 import defaultLogo from '../assets/images/default_logo.jpg'
-
+import { capitalizeFirst, formatSalary } from "@/utils/formatters"
 
 const JobCard = ({ job }) => {
 
-   const formatSalary = (salary) => {
-      return new Intl.NumberFormat('en-US', {
-         style: 'currency',
-         currency: 'USD',
-         maximumFractionDigits: 0,
-      }).format(salary)
-   }
-
+   
    return (
       <div className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-purple-100 transition-all duration-300 p-5 flex flex-col justify-between">
 
@@ -56,7 +49,7 @@ const JobCard = ({ job }) => {
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  {job.location_type}
+                  {capitalizeFirst(job.location_type)}
                </span>
                <span className="inline-flex items-center gap-1 text-xs font-semibold bg-green-50 text-green-700 px-2.5 py-1 rounded-full">
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +61,7 @@ const JobCard = ({ job }) => {
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                  {job.level}
+                  {capitalizeFirst(job.level)}
                </span>
             </div>
          </div>

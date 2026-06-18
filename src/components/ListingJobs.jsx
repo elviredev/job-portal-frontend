@@ -5,7 +5,7 @@ import api from "@/api/axios"
 
 const ListingJobs = () => {
 
-
+   // const [meta, setMeta] = useState(null)
    const [jobs, setJobs] = useState([])
    const [loading, setLoading] = useState(true)
    const [error, setError] = useState(null)
@@ -20,7 +20,7 @@ const ListingJobs = () => {
          try {
             const res = await api.get('/jobs')
             // console.log(data);
-            setJobs(res.data || [])
+            setJobs(res.data.data || [])
          } catch (err) {
             console.log("Error:", err);
             setError("Unable to load jobs")
@@ -48,6 +48,7 @@ const ListingJobs = () => {
       )
    }
 
+   
    return (
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
          <div className="w-[95%] mx-auto">
@@ -81,7 +82,7 @@ const ListingJobs = () => {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                      {/* Job Cards */}
-                     {jobs.map((job) =>
+                     {jobs.map((job) =>                      
                         <JobCard key={job.id} job={job} />
                      )}
                   </div>

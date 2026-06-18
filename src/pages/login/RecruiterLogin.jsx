@@ -4,15 +4,13 @@ import { GoogleLogin } from "@react-oauth/google"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import api from "@/api/axios"
-
-const API_URL = import.meta.env.VITE_API_URL
-if (!API_URL) {
-   throw new Error("VITE_API_URL is not defined")
-}
+import { useAuth } from "@/context/AuthContext"
 
 
 const RecruiterLogin = () => {
 
+   // importer refreshUser() depuis le context 
+   const { refreshUser } = useAuth()
    const navigate = useNavigate()
 
    const [loading, setLoading] = useState(false)
@@ -35,7 +33,7 @@ const RecruiterLogin = () => {
          setLoading(true)
 
          const token = credentialResponse.credential
-         await api.post(`${API_URL}/auth/google-login`, {
+         await api.post('/auth/google-login', {
             token,
             role: "recruiter"
          },
@@ -43,6 +41,9 @@ const RecruiterLogin = () => {
                withCredentials: true // http-only cookie
             }
          )
+         
+         // met à jour le state "user" sans recharger la page d'accueil ici dont les infos du user s'affiche dans la navbar automatiquement
+         await refreshUser()
 
          // after login success
          toast.success('Google logged successfully!')
@@ -66,7 +67,7 @@ const RecruiterLogin = () => {
       try {
          setLoading(true)
 
-         await api.post(`${API_URL}/auth/login`,
+         await api.post('/auth/login',
             {
                email: formData.email,
                password: formData.password,
