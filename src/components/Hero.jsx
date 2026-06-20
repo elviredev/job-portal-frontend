@@ -1,6 +1,19 @@
+import { useState } from 'react';
 import jobCover from '../assets/images/job_cover.jpg'
 
- const Hero = () => {
+const Hero = ({ onSearch }) => {
+
+   const [keyword, setKeyword] = useState("");
+   const [location, setLocation] = useState("");
+
+   const handleSubmit = (e) => {
+      e.preventDefault();
+      onSearch({ keyword, location });
+   };
+
+
+
+
    return (
       <main>
          <div className="relative bg-gray-900 overflow-hidden h-auto md:h-100 flex items-center">
@@ -33,7 +46,10 @@ import jobCover from '../assets/images/job_cover.jpg'
                </div>
 
                {/* Search form */}
-               <form className="max-w-3xl mx-auto bg-white p-3 rounded-2xl shadow-2xl shadow-purple-900/30">
+               <form
+                  onSubmit={handleSubmit}
+                  className="max-w-3xl mx-auto bg-white p-3 rounded-2xl shadow-2xl shadow-purple-900/30"
+               >
                   <div className="flex flex-col md:flex-row items-center gap-3">
 
                      {/* Keyword */}
@@ -46,6 +62,8 @@ import jobCover from '../assets/images/job_cover.jpg'
                            <input
                               type="text"
                               name="keyword"
+                              value={keyword}
+                              onChange={(e) => setKeyword(e.target.value)}
                               placeholder="Job title or keyword..."
                               className="w-full pl-11 pr-3 py-3 text-sm text-gray-700 focus:outline-none focus:ring-0 placeholder-gray-400 rounded-xl"
                               style={{ border: "none" }}
@@ -64,6 +82,8 @@ import jobCover from '../assets/images/job_cover.jpg'
                            <input
                               type="text"
                               name="location"
+                              value={location}
+                              onChange={(e) => setLocation(e.target.value)}
                               placeholder="City or remote..."
                               className="w-full pl-11 pr-3 py-3 text-sm text-gray-700 focus:outline-none focus:ring-0 placeholder-gray-400 rounded-xl"
                               style={{ border: "none" }}

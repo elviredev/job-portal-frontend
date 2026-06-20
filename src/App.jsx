@@ -3,7 +3,6 @@ import { CreateJob, Dashboard, EditedProfile, EditJob, Home, JobDetails, Managed
 import { Navbar } from '@/components'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AuthProvider, useAuth } from "@/context/AuthContext"
-import { useContext } from "react"
 import ProtectedRoute from "./components/ProtectedRoute"
 
 // prevent login in users

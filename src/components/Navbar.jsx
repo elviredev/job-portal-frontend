@@ -31,7 +31,7 @@ const Navbar = () => {
       return () => document.removeEventListener('pointerdown', handleClickOutside)
    }, [isDropdownOpen])
 
-   // logou
+   // logout
    const handleLogout = async () => {
       try {
          await logout()

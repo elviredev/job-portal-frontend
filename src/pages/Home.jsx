@@ -4,15 +4,15 @@ import { useState } from "react"
 
 const Home = () => {
 
-// filter jobs  
-// const [search, setSearch] = useState()
+  // filter jobs  
+  const [searchParams, setSearchParams] = useState({ keyword: "", location: "" })
 
 
   return (
     <>
-      <Hero />
+      <Hero onSearch={setSearchParams} />
       <TrustedCompany />
-      <ListingJobs />
+      <ListingJobs searchParams={searchParams} />
       <Footer />
     </>
   )
