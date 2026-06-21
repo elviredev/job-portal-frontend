@@ -82,7 +82,7 @@ const ListingJobs = ({ searchParams }) => {
 
             if (res.data.status === "success") {
                // console.log(data);
-               setJobs(res.data.data)
+               setJobs(res.data.data || [])
                setMeta(res.data.meta)
             } else {
                setJobs([])

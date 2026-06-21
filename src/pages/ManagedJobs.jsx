@@ -1,12 +1,61 @@
 import { Aside } from "@/components"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaTrash, FaEdit } from "react-icons/fa"
 import { NavLink } from "react-router-dom"
+import { toast } from "react-toastify"
+import api from "@/api/axios"
 
 const ManagedJobs = () => {
 
    const [isSidebarOpen, setSidebarOpen] = useState(false)
    const toggleSidebar = () => setSidebarOpen((prev) => !prev)
+
+   const [selectedId, setSelectedId] = useState(null)
+   const [isModalOpen, setIsModalOpen] = useState(false)
+   const [jobs, setJobs] = useState([])
+   const [loading, setLoading] = useState(true)
+   const [error, setError] = useState(null)
+
+   const getDaysLeft = (deadline) => {
+      const today = new Date()
+      const endDate = new Date(deadline)
+
+      const diffTime = endDate - today
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+      return diffDays
+   }
+
+
+   // fetch data from api
+   useEffect(() => {
+      const fetchJobs = async () => {
+         try {
+            const res = await api.get('/my-jobs')
+
+            if (res.data.status === "success") {
+               setJobs(res.data.data || [])
+            }
+         } catch (error) {
+            console.log(error);
+            setError("Failed to fetch jobs")
+         } finally {
+            setLoading(false)
+         }
+      }
+
+      fetchJobs()
+   }, [])
+
+   if (loading) {
+      return <p>Loading...</p>
+   }
+
+   if (error) {
+      return (
+         <div className="text-red-500">{error}</div>
+      )
+   }
 
    return (
       <div className="flex flex-col min-h-screen bg-white">
@@ -48,67 +97,91 @@ const ManagedJobs = () => {
                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Title</th>
                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Open</th>
+                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Application Status</th>
                                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                               </tr>
                            </thead>
                            <tbody className="bg-white divide-y divide-gray-200">
-                              <tr >
-                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Full Stack Developer</td>
-                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Information Technology</td>
-                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Remote</td>
-                                 <td className="px-6 py-4">
 
-                                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
-                                       Active
-                                    </span>
+                              {jobs.map((job) => {
+                                 const daysLeft = getDaysLeft(job.application_deadline)
 
-                                 </td>
+                                 return (
+                                    <tr key={job.id} >
+                                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{job.title}</td>
+                                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{job.department}</td>
+                                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{job.location}</td>
+                                       <td className="px-6 py-4">
+                                          {daysLeft > 0 ?
+                                             (
+                                                <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
+                                                   Active
+                                                </span>
+                                             ) : (
+                                                <span className="bg-red-100 text-red-700 px-2 py-1 rounded text-xs">
+                                                   Expired
+                                                </span>
+                                             )}
+                                       </td>
 
-                                 <td className="px-6 py-4 text-sm text-center flex justify-center items-center space-x-4">                                 
-                                    <NavLink to='/editJob' className="text-blue-600 hover:text-blue-900">
-                                       <FaEdit size={18} />
-                                    </NavLink>
-                                    
-                                    <button
-                                       className="text-red-600 hover:text-red-900"
-                                    >
-                                       <FaTrash size={18} />
-                                    </button>
-                                 </td>
-                              </tr>
+                                       <td className="px-6 py-4 text-sm text-center flex justify-center items-center space-x-4">
+                                          <NavLink to={`/editJob/${job.id}`} className="text-blue-600 hover:text-blue-900">
+                                             <FaEdit size={18} />
+                                          </NavLink>
+
+                                          <button
+                                             className="text-red-600 hover:text-red-900"
+                                          >
+                                             <FaTrash size={18} />
+                                          </button>
+                                       </td>
+                                    </tr>
+                                 )
+                              })}
+
 
                            </tbody>
                         </table>
 
                      </div>
+
+                     {/* For mobile size */}
                      <div className="sm:hidden space-y-4">
+                        {jobs.map((job) => {
+                           const daysLeft = getDaysLeft(job.application_deadline)
 
-                        <div className="border border-gray-200 rounded-lg p-4 shadow-sm">
-                           <div className="flex justify-between items-start mb-2">
-                              <p className="text-lg font-bold text-gray-900">Full Stack Developer</p>
-                              <span className="px-2 py-1 rounded text-xs  bg-green-100 text-green-700"
+                           return (
+                              <div key={job.id} className="border border-gray-200 rounded-lg p-4 shadow-sm">
+                                 <div className="flex justify-between items-start mb-2">
+                                    <p className="text-lg font-bold text-gray-900">{job.title}</p>
+                                    <span className={`px-2 py-1 rounded text-xs ${daysLeft > 0
+                                       ? "bg-green-100 text-green-700"
+                                       : "bg-red-100 text-red-700"
+                                       }`}>
+                                       {daysLeft > 0 ? "Active" : "Expired"}
+                                    </span>
+                                 </div>
+                                 <p className="text-sm text-gray-600">
+                                    <span className="font-medium text-gray-800">
+                                       Dept:
+                                    </span>{" "}
+                                    {job.department} • {job.location}
+                                 </p>
+                                 <div className="flex justify-end space-x-4 pt-2 border-t border-gray-100 mt-3">
+                                    <NavLink to={`/editJob/${job.id}`} className="text-blue-600 hover:text-blue-900" title="Edit">
+                                       <FaEdit size={18} />
+                                    </NavLink>
+                                    <button
+                                       className="text-red-600 hover:text-red-900"
+                                       title="Delete"
+                                    >
+                                       <FaTrash size={18} />
+                                    </button>
+                                 </div>
+                              </div>
+                           )
+                        })}
 
-                              >
-                                 Active
-                              </span>
-                           </div>
-                           <p className="text-sm text-gray-600">
-                              <span className="font-medium text-gray-800">Dept:</span> Information Technology
-                              <span className="text-gray-500"> Remote</span>
-                           </p>
-                           <div className="flex justify-end space-x-4 pt-2 border-t border-gray-100 mt-3">
-                              <NavLink to='/editJob' className="text-blue-600 hover:text-blue-900" title="Edit">
-                                 <FaEdit size={18} />
-                              </NavLink>
-                              <button
-                                 className="text-red-600 hover:text-red-900"
-                                 title="Delete"
-                              >
-                                 <FaTrash size={18} />
-                              </button>
-                           </div>
-                        </div>
 
                      </div>
 
