@@ -26,10 +26,7 @@ const App = () => {
 
             <Route path='/' element={<Home />} />
             <Route path='/jobDetails' element={<JobDetails />} />
-            <Route path='/createJob' element={<CreateJob />} />
-            <Route path='/managedJobs' element={<ManagedJobs />} />
-            <Route path='/editJob' element={<EditJob />} />
-            <Route path='/editedProfile' element={<EditedProfile />} />
+
             <Route path='/recruiterLogin' element={<RecruiterLogin />} />
             <Route path='/recruiterSignup' element={<RecruiterSignup />} />
             <Route path='/userLogin' element={<UserLogin />} />
@@ -43,6 +40,10 @@ const App = () => {
             {/* recruiter only routes */}
             <Route element={<ProtectedRoute allowedRoles={['recruiter']} />}>
               <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/createJob' element={<CreateJob />} />
+              <Route path='/managedJobs' element={<ManagedJobs />} />
+              <Route path='/editJob/:id' element={<EditJob />} />
+              <Route path='/editedProfile' element={<EditedProfile />} />
             </Route>
 
             <Route path='*' element={
