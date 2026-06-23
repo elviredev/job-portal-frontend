@@ -60,6 +60,9 @@ const JobDetails = () => {
       </div>
    )
 
+   const isCandidate = user?.role === 'user'
+   const isRecruiter = user?.role === 'recruiter'
+
    if (error) return <div className="text-center text-red-500 p-10">{error}</div>
    if (!job) return <div className="text-center p-10">Job not found</div>
 
@@ -133,24 +136,27 @@ const JobDetails = () => {
                               </svg>
                               Already Applied
                            </div>
-                        ) : (
+                        ) : isCandidate ? (
                            <button
-                              onClick={() => {
-                                 if(!user) {
-                                    navigate('/userLogin')
-                                    return
-                                 }
-
-                                 setShowModal(true)
-                              }}
+                              onClick={() => setShowModal(true)}
                               className="w-full lg:w-auto px-8 py-3 bg-white text-purple-700 font-bold rounded-xl shadow-lg hover:shadow-xl hover:bg-purple-50 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2"
                            >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                               </svg>
-                              {user ? 'Apply Now' : 'Login to Apply'}
+                              Apply Now
                            </button>
-                        )}
+                        ) : !user ? (
+                           <button
+                              onClick={() => navigate('/userLogin')}
+                              className="w-full lg:w-auto px-8 py-3 bg-white text-purple-700 font-bold rounded-xl shadow-lg hover:shadow-xl hover:bg-purple-50 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2"
+                           >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                              </svg>
+                              Login to Apply
+                           </button>
+                        ) : null}
                      </div>
                   </div>
                </header>
@@ -277,20 +283,24 @@ const JobDetails = () => {
                         </div>
 
                         {/* Apply CTA inside sidebar */}
-                        {!hasApplied && (
+                        {!hasApplied && isCandidate && (
                            <div className="px-6 pb-6">
                               <button
-                                 onClick={() => {
-                                    if(!user) {
-                                       navigate('/userLogin')
-                                       return
-                                    }
-
-                                    setShowModal(true)
-                                 }}
+                                 onClick={() => setShowModal(true)}
                                  className="w-full py-2.5 bg-linear-to-r from-purple-600 to-indigo-600 text-white text-sm font-bold rounded-xl hover:from-purple-700 hover:to-indigo-700 transition shadow-md shadow-purple-200"
                               >
-                                 {user ? 'Apply for this Job' : 'Login to Apply'}
+                                 Apply for this Job
+                              </button>
+                           </div>
+                        )}
+
+                        {!user && (
+                           <div className="px-6 pb-6">
+                              <button
+                                 onClick={() => navigate('/userLogin')}
+                                 className="w-full py-2.5 bg-linear-to-r from-purple-600 to-indigo-600 text-white text-sm font-bold rounded-xl hover:from-purple-700 hover:to-indigo-700 transition shadow-md shadow-purple-200"
+                              >
+                                 Login to Apply
                               </button>
                            </div>
                         )}
