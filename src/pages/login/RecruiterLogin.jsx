@@ -42,7 +42,7 @@ const RecruiterLogin = () => {
             }
          )
          
-         // met à jour le state "user" sans recharger la page d'accueil ici dont les infos du user s'affiche dans la navbar automatiquement
+         // met à jour le state "user" sans recharger la page d'accueil donc les infos du user s'affiche dans la navbar automatiquement
          await refreshUser()
 
          // after login success

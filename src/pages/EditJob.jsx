@@ -1,6 +1,6 @@
 import { Aside, TextInput, SelectInput, TextAreaInput } from "@/components"
 import { useState, useEffect } from "react"
-import { FaCloudUploadAlt } from "react-icons/fa"
+import { FaBars, FaCloudUploadAlt } from "react-icons/fa"
 import { ImSpinner2 } from "react-icons/im"
 import defaultLogo from '../assets/images/default_logo.jpg'
 import { useNavigate, useParams } from "react-router-dom"
@@ -126,9 +126,7 @@ const EditJob = () => {
          {/* header for mobile */}
          <header className="h-16 flex items-center bg-white shadow-md border-b lg:hidden">
             <button onClick={toggleSidebar} className="p-4 text-purple-600">
-               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-               </svg>
+               <FaBars size={24} />
             </button>
             <div className="ml-4 text-xl font-semibold text-purple-800">Talent Hub</div>
          </header>
@@ -395,17 +393,18 @@ const EditJob = () => {
                      <div className="flex justify-end pt-4 border-t border-gray-200">
                         <button
                            type="submit"
+                           disabled={loading}
                            className="px-4 py-2 sm:px-8 sm:py-3 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition duration-150 shadow-lg focus:outline-none flex items-center justify-center space-x-2"
                         >
                            {loading ? (
                               <>
                                  <ImSpinner2 className="w-5 h-5 animate-spin text-white" />
-                                 <span>Posting...</span>
+                                 <span>Updating...</span>
                               </>
                            ) : (
                               <>
                                  <FaCloudUploadAlt className="w-5 h-5" />
-                                 <span>Edit Job Now</span>
+                                 <span>Update Job</span>
                               </>
                            )
                            }
