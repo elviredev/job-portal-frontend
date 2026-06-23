@@ -61,7 +61,6 @@ const JobDetails = () => {
    )
 
    const isCandidate = user?.role === 'user'
-   const isRecruiter = user?.role === 'recruiter'
 
    if (error) return <div className="text-center text-red-500 p-10">{error}</div>
    if (!job) return <div className="text-center p-10">Job not found</div>
