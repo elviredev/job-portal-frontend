@@ -1,18 +1,22 @@
 import { ApplyJobModal, Footer } from "@/components"
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import api from "@/api/axios"
 import { capitalizeFirst, formatSalary, getDaysAgo } from "@/utils/formatters"
+import { useAuth } from "@/context/AuthContext"
+
 
 
 const JobDetails = () => {
 
    const { id } = useParams()
+   const { user } = useAuth()
    const [showModal, setShowModal] = useState(false)
    const [job, setJob] = useState(null)
    const [loading, setLoading] = useState(true)
    const [error, setError] = useState(null)
    const [hasApplied, setHasApplied] = useState(false)
+   const navigate = useNavigate()
 
    // fetch job
    useEffect(() => {
@@ -35,15 +39,17 @@ const JobDetails = () => {
    useEffect(() => {
       const checkIfApplied = async () => {
          try {
-            const res = await api.get(`/appliedJob/check/${id}`)
+            const res = await api.get(`/applied-jobs/check/${id}`)
             setHasApplied(res.data.applied)
          } catch {
             setHasApplied(false)
          }
       }
 
-      if (id) checkIfApplied()
-   }, [id])
+      if (user?.role === "user") {
+         checkIfApplied()
+      }
+   }, [id, user])
 
    if (loading) return (
       <div className="min-h-screen flex items-center justify-center">
@@ -129,13 +135,20 @@ const JobDetails = () => {
                            </div>
                         ) : (
                            <button
-                              onClick={() => setShowModal(true)}
+                              onClick={() => {
+                                 if(!user) {
+                                    navigate('/userLogin')
+                                    return
+                                 }
+
+                                 setShowModal(true)
+                              }}
                               className="w-full lg:w-auto px-8 py-3 bg-white text-purple-700 font-bold rounded-xl shadow-lg hover:shadow-xl hover:bg-purple-50 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2"
                            >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                               </svg>
-                              Apply Now
+                              {user ? 'Apply Now' : 'Login to Apply'}
                            </button>
                         )}
                      </div>
@@ -267,10 +280,17 @@ const JobDetails = () => {
                         {!hasApplied && (
                            <div className="px-6 pb-6">
                               <button
-                                 onClick={() => setShowModal(true)}
+                                 onClick={() => {
+                                    if(!user) {
+                                       navigate('/userLogin')
+                                       return
+                                    }
+
+                                    setShowModal(true)
+                                 }}
                                  className="w-full py-2.5 bg-linear-to-r from-purple-600 to-indigo-600 text-white text-sm font-bold rounded-xl hover:from-purple-700 hover:to-indigo-700 transition shadow-md shadow-purple-200"
                               >
-                                 Apply for this Job
+                                 {user ? 'Apply for this Job' : 'Login to Apply'}
                               </button>
                            </div>
                         )}
@@ -293,7 +313,7 @@ const JobDetails = () => {
          </div>
 
          <ApplyJobModal
-            isOpen={showModal}
+            isOpen={user && showModal}
             onClose={() => setShowModal(false)}
             onSuccess={() => {
                setShowModal(false)
