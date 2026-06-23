@@ -24,3 +24,16 @@ export const capitalizeFirst = (text) => {
     const trimmed = text.trim()
     return trimmed[0].toUpperCase() + trimmed.slice(1)
 }
+
+// retourne le nb de jour depuis la publication d'un job
+export const getDaysAgo = (dateString) => {
+    if(!dateString) return ""
+    
+    const today = new Date()
+    const postedDate = new Date(dateString)
+    const diffDays = Math.floor((today - postedDate) / (1000 * 60 * 60 * 24))
+
+    if(diffDays <= 0) return "Today"
+    if(diffDays === 1) return "1 day ago"
+    return `${diffDays} days ago`
+}
