@@ -78,8 +78,10 @@ const RecruiterLogin = () => {
             }
          )
 
+         await refreshUser()
+
          // after login success
-         toast.success('You are logged successfully!')
+         toast.success('You are logged successfully!')         
          navigate('/')
       } catch (error) {
          const message = 
