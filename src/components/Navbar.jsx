@@ -34,10 +34,16 @@ const Navbar = () => {
    // logout
    const handleLogout = async () => {
       try {
+         const redirectPath = 
+            user?.role === 'user'
+               ? '/userLogin'
+               : '/recruiterLogin'
+
          await logout()
          googleLogout()
          setMenuMobileOpen(false)
-         navigate('/recruiterLogin')
+
+         navigate(redirectPath)
       } catch (error) {
          console.log("Logout failed: ", error)
       }

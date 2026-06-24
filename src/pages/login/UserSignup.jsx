@@ -1,8 +1,71 @@
 import { TextInput } from "@/components"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
+import { useState } from "react"
+import api from "@/api/axios"
+import { toast } from "react-toastify"
+
 
 
 const UserSignup = () => {
+
+   const navigate = useNavigate()
+   const [error, setError] = useState(null)
+   const [loading, setLoading] = useState(false)
+
+   const [formData, setFormData] = useState({
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      role: "user"
+   })
+
+
+   const handleChange = (e) => {
+      setFormData({
+         ...formData,
+         [e.target.name]: e.target.value
+      })
+   }
+
+   const handleSubmit = async (e) => {
+      e.preventDefault()
+
+      setError(null)
+
+      if (formData.password !== formData.password_confirmation) {
+         return toast.error("Passwords not match.")
+      }
+
+      setLoading(true)
+
+      try {
+         await api.post(
+            `/auth/register`,
+            formData,
+            { withCredentials: true }
+         )
+
+         toast.success("User account created successfully!")
+
+         navigate('/userLogin')
+      } catch (error) {
+         if (error.response?.status === 422) {
+            const validationErrors = error.response.data.errors
+            const firstError = Object.values(validationErrors)[0][0]
+
+            toast.error(firstError)
+         } else {
+            toast.error('Something went wrong. Please try again.')
+         }
+      } finally {
+         setLoading(false)
+      }
+   }
+
+
+
    return (
       <main className="grow flex justify-center items-center p-4 ">
 
@@ -11,19 +74,23 @@ const UserSignup = () => {
             <div className="p-8 sm:p-10">
                <h2 className="text-2xl font-semibold mb-8 text-gray-900 text-center">User Create Account</h2>
 
-               <form className="space-y-6">
+               {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+               <form onSubmit={handleSubmit} className="space-y-6">
 
                   <div className="flex space-x-4">
                      <TextInput
                         label="First Name"
-                        name="firstName"
+                        name="first_name"
+                        onChange={handleChange}
                         placeholder="First Name"
                         required
                      />
 
                      <TextInput
                         label="Last Name"
-                        name="lastName"
+                        name="last_name"
+                        onChange={handleChange}
                         placeholder="Last Name"
                         required
                      />
@@ -33,6 +100,7 @@ const UserSignup = () => {
                      label="Email"
                      type="email"
                      name="email"
+                     onChange={handleChange}
                      placeholder="Enter your email"
                      required
                   />
@@ -41,6 +109,7 @@ const UserSignup = () => {
                      label="Password"
                      type="password"
                      name="password"
+                     onChange={handleChange}
                      placeholder="Create a password"
                      required
                   />
@@ -49,15 +118,18 @@ const UserSignup = () => {
                      label="Confirm Password"
                      type="password"
                      name="password_confirmation"
+                     onChange={handleChange}
                      placeholder="Confirm your password"
                      required
                   />
 
                   <button
                      type="submit"
-                     className="w-full bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 rounded-xl font-semibold transition duration-200 shadow-sm shadow-purple-200"
+                     disabled={loading}
+                     className={`w-full px-4 py-3 text-white font-semibold transition duration-300 shadow-md shadow-purple-200  rounded-lg
+                        ${loading ? 'bg-purple-400 cursor-not-allowed' : 'bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700'}`}
                   >
-                     Sign Up
+                     {loading ? "Create Account..." : "Sign Up"}
                   </button>
                </form>
 

@@ -30,7 +30,7 @@ const App = () => {
             <Route path='/recruiterLogin' element={<RecruiterLogin />} />
             <Route path='/recruiterSignup' element={<RecruiterSignup />} />
             <Route path='/userLogin' element={<UserLogin />} />
-            <Route path='/UserSignup' element={<UserSignup />} />
+            <Route path='/userSignup' element={<UserSignup />} />
 
             {/* User only routes */}
             <Route element={<ProtectedRoute allowedRoles={['user']} />}>
