@@ -1,10 +1,95 @@
+import { useState, useEffect } from "react"
+import api from "@/api/axios"
+import { toast } from "react-toastify"
 import { TextInput } from "."
+import { useAuth } from "@/context/AuthContext"
 
 
-const ApplyJobModal = ({ isOpen, onClose }) => {
+
+const ApplyJobModal = ({ isOpen, onClose, job, onSuccess }) => {
+
+  const { user } = useAuth()
+
+  const isAuthorized = user?.role === "user"
+
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    linkedin: "",
+    resume: null
+  })
+
+
+  const [resumeName, setResumeName] = useState(null)
+
+  // pré remplir le formulaire
+  useEffect(() => {
+    if (isOpen && user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData(prev => ({
+        ...prev,
+        first_name: user.first_name || "",
+        last_name: user.last_name || "",
+        email: user.email || "",
+        linkedin: user.linkedin || ""
+      }))
+    }
+  }, [isOpen, user])
+
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target
+
+    if (name === 'resume') {
+      setFormData({ ...formData, resume: files[0] })
+      setResumeName(files[0]?.name || null)
+    } else {
+      setFormData({ ...formData, [name]: value })
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!isAuthorized) return;
+
+    const data = new FormData()
+    data.append("job_id", job.id)
+    data.append("first_name", formData.first_name)
+    data.append("last_name", formData.last_name)
+    data.append("email", formData.email)
+    if (formData.linkedin) data.append("linkedin", formData.linkedin)
+    if (formData.resume) data.append("resume", formData.resume)
+
+
+    try {
+      await api.post('/applied-jobs', data)
+
+      toast.success("Application submitted successfully!")
+
+      onSuccess()
+    } catch (error) {
+      if (error.response?.status === 422) {
+        const errors = error.response.data.errors
+
+        if (errors) {
+          Object.values(errors).forEach(fieldErrors => {
+            toast.error(fieldErrors[0])
+          })
+        }
+
+        return
+      }
+
+      toast.error('Something went wrong')
+    }
+
+  }
 
   // permet de fermer la modal sinon toujours affichée à cause de "fixed inset-0"
   if (!isOpen) return null
+
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
@@ -28,14 +113,14 @@ const ApplyJobModal = ({ isOpen, onClose }) => {
             </div>
             <div>
               <h2 className="text-white font-bold text-xl leading-tight">Job Application</h2>
-              <p className="text-white/70 text-sm truncate max-w-xs">Senior Full Stack Developer</p>
+              <p className="text-white/70 text-sm truncate max-w-xs">{job.title}</p>
             </div>
           </div>
         </div>
 
         {/* Body */}
         <div className="p-8 overflow-y-auto max-h-[70vh]">
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
 
             {/* Personal Info */}
             <div>
@@ -47,6 +132,8 @@ const ApplyJobModal = ({ isOpen, onClose }) => {
                 <TextInput
                   label='First Name'
                   name='first_name'
+                  value={formData.first_name}
+                  onChange={handleChange}
                   placeholder="First Name"
                   required
                 />
@@ -54,6 +141,8 @@ const ApplyJobModal = ({ isOpen, onClose }) => {
                 <TextInput
                   label='Last Name'
                   name='last_name'
+                  value={formData.last_name}
+                  onChange={handleChange}
                   placeholder="Last Name"
                   required
                 />
@@ -62,8 +151,10 @@ const ApplyJobModal = ({ isOpen, onClose }) => {
                   <TextInput
                     label='Email'
                     name='email'
+                    value={formData.email}
+                    onChange={handleChange}
                     type="email"
-                    placeholder="Email"
+                    placeholder="your@email.com"
                     required
                   />
                 </div>
@@ -81,29 +172,43 @@ const ApplyJobModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Custom file upload */}
-              <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                  Resume <span class="text-red-400">*</span>
-                  <span class="text-gray-400 font-normal ml-1">(PDF only, max 10MB)</span>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Resume
+                  <span className="text-gray-400 font-normal ml-1">(PDF only, max 5MB)</span>
                 </label>
 
-                <label class="flex items-center gap-3 border-2 border-dashed border-gray-200 hover:border-violet-300 hover:bg-gray-50 rounded-xl p-4 cursor-pointer transition">
-                  <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <label className={`flex items-center gap-3 border-2 border-dashed rounded-xl p-4 cursor-pointer transition
+                  ${resumeName ? 'border-violet-400 bg-violet-50' : 'border-gray-200 hover:border-violet-300 hover:bg-gray-50'}`
+                }>
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0
+                    ${resumeName ? 'bg-violet-100' : 'bg-gray-100'}`}>
+                    <svg className={`w-5 h-5 ${resumeName ? 'text-violet-600' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
-                  <div class="min-w-0 flex-1">
-                    <p class="text-sm text-gray-500">Click to upload your resume</p>
-                    <p class="text-xs text-gray-400 mt-0.5">PDF format only</p>
+                  <div className="min-w-0 flex-1">
+                    {resumeName
+                      ? <p className="text-sm font-medium text-violet-700 truncate">{resumeName}</p>
+                      : <p className="text-sm text-gray-500">Click to upload your resume</p>
+                    }
+                    {!resumeName && <p className="text-xs text-gray-400 mt-0.5">PDF format only</p>}
                   </div>
-                  <input type="file" name="resume" accept=".pdf" class="hidden" />
+                  <input
+                    type="file"
+                    name="resume"
+                    onChange={handleChange}
+                    accept=".pdf"
+                    className="hidden"
+                  />
                 </label>
               </div>
 
               <TextInput
                 label='LinkedIn URL'
                 name='linkedin'
+                value={formData.linkedin}
+                onChange={handleChange}
                 type="url"
                 placeholder="https://linkedin.com/in/yourprofile"
               />
