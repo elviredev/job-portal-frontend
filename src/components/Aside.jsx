@@ -1,14 +1,32 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { FaPlusCircle, FaUsers, FaUserEdit, FaTimes, FaListUl } from "react-icons/fa"
-import kfcLogo from '../assets/images/kfc.png'
+import defaultLogo from '../assets/images/default_logo.jpg'
+import { useAuth } from '@/context/AuthContext'
+import { googleLogout } from '@react-oauth/google'
 
 const Aside = ({ isOpen, toggleSidebar }) => {
+
+   const { user, logout } = useAuth() // fetch data from AuthContext
+   const navigate = useNavigate()
 
    const getNavLinkClass = ({ isActive }) =>
       `flex items-center p-3 rounded-lg ${isActive
          ? 'text-purple-700'
          : 'text-gray-700 hover:text-purple-700 transition duration-200'
       }`
+
+   // logout
+   const handleLogout = async () => {
+      try {
+         await logout()
+         googleLogout()
+         // setMenuMobileOpen(false)
+
+         navigate('/recruiterLogin')
+      } catch (error) {
+         console.log("Logout failed: ", error)
+      }
+   }
 
 
    return (
@@ -63,7 +81,7 @@ const Aside = ({ isOpen, toggleSidebar }) => {
                   <div className="relative shrink-0">
                      <img
                         className="w-8 h-8 rounded-lg object-cover shadow-sm ring-1 ring-purple-200"
-                        src={kfcLogo}
+                        src={user.image || defaultLogo}
                         referrerPolicy="no-referrer"
                         alt='image'
                      />
@@ -72,8 +90,8 @@ const Aside = ({ isOpen, toggleSidebar }) => {
 
                   {/* User Info */}
                   <div className="flex-1 min-w-0 relative z-10">
-                     <p className="text-xs font-semibold text-gray-800 truncate leading-none mb-0.5">Tom Smith</p>
-                     <p className="text-[10px] text-gray-400 truncate leading-none">tom@gmail.com</p>
+                     <p className="text-xs font-semibold text-gray-800 truncate leading-none mb-0.5">{user.first_name}</p>
+                     <p className="text-[10px] text-gray-400 truncate leading-none">{user.email}</p>
                   </div>
 
                   {/* Actions — always visible but subtle */}
@@ -89,7 +107,7 @@ const Aside = ({ isOpen, toggleSidebar }) => {
                      </NavLink>
 
                      <button
-
+                        onClick={() => handleLogout()}
                         className="w-7 h-7 flex items-center justify-center rounded-lg text-purple-300 hover:text-red-500 hover:bg-white hover:shadow-sm transition-all duration-150"
                         title="Logout"
                      >

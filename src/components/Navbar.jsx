@@ -217,7 +217,7 @@ const Navbar = () => {
                         </NavLink>
                         <div className="pt-2 border-t border-gray-100 mt-2">
                            <button
-                              onClick={handleLogout}
+                              onClick={() => { handleLogout(); setIsDropdownOpen() }}
                               className="w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-50 transition duration-200"
                            >
                               Logout
