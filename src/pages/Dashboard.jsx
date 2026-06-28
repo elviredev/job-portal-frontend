@@ -28,7 +28,7 @@ const Dashboard = () => {
                />
             )}
             <Aside isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-            <ViewApplications />
+            <ViewApplications userRole="recruiter" />
          </div>
       </div>
    )

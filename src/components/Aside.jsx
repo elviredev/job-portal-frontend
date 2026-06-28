@@ -21,7 +21,7 @@ const Aside = ({ isOpen, toggleSidebar }) => {
          await logout()
          googleLogout()
          // setMenuMobileOpen(false)
-
+         
          navigate('/recruiterLogin')
       } catch (error) {
          console.log("Logout failed: ", error)
@@ -107,7 +107,7 @@ const Aside = ({ isOpen, toggleSidebar }) => {
                      </NavLink>
 
                      <button
-                        onClick={() => handleLogout()}
+                        onClick={handleLogout}
                         className="w-7 h-7 flex items-center justify-center rounded-lg text-purple-300 hover:text-red-500 hover:bg-white hover:shadow-sm transition-all duration-150"
                         title="Logout"
                      >
